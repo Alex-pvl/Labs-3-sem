@@ -280,6 +280,42 @@ public:
         cout << endl;
     }
 
+    //lr2
+    int* operator+(const Date& d) {
+        int* res = new int[2];
+        res[0] = this->day + d.day;
+        res[1] = this->h + d.h;
+        return res;
+    }
+
+    int* operator-(const Date& d) {
+        int* res = new int[2];
+        res[0] = this->day - d.day;
+        res[1] = this->h - d.h;
+        return res;
+    }
+
+    operator char*() {
+        this->setDateTime(); 
+        return date_time;
+    }
+
+    friend Date operator+(const Date& d1, const Date& d2);
+
+    friend Date operator-(const Date& d1, const Date& d2);
+
+    Date& operator=(const Date& d) {
+        day = d.day;
+        mon = d.mon;
+        year = d.year;
+        h = d.h;
+        m = d.m;
+        s = d.s;
+        date_time = d.date_time;
+        count++;
+        return *this;
+    }
+
     Date() {
         count++;
     }
@@ -324,3 +360,13 @@ public:
 };
 
 int Date::count = 0;
+
+Date operator+(const Date& d1, const Date& d2) {
+    Date d(d1.day + d2.day, d1.mon + d2.mon, d1.year + d2.year, d1.h + d2.h, d1.m + d2.m, d1.s + d2.s);
+    return d;
+}
+
+Date operator-(const Date& d1, const Date& d2) {
+    Date d(d1.day - d2.day, d1.mon - d2.mon, d1.year - d2.year, d1.h - d2.h, d1.m - d2.m, d1.s - d2.s);
+    return d;
+}
