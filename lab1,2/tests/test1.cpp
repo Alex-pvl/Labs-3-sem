@@ -125,4 +125,3 @@ TEST_CASE("Testing getDateTime()") {
     } 
     REQUIRE(isEqual); 
 }
-

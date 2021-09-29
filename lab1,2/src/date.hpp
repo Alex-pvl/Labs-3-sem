@@ -51,9 +51,7 @@ public:
         return size;
     }
 
-    void incYear() {
-        this->setYear(this->getYear() + 1);
-    }
+    void incYear() { this->setYear(this->getYear() + 1); }
 
     void incMonth() {
         if (this->getMonth() == 12) {
@@ -127,9 +125,7 @@ public:
         }
     }
 
-    void decYear() {
-        this->setYear(this->getYear() - 1);
-    }
+    void decYear() { this->setYear(this->getYear() - 1); }
 
     void decMonth() {
         if (this->getMonth() == 1) {
@@ -212,7 +208,6 @@ public:
         int h_s = getSize(h), h_p = pow(10, h_s-1);
         int m_s = getSize(m), m_p = pow(10, m_s-1);
         int s_s = getSize(s), s_p = pow(10, s_s-1);
-        
         if (day == 0) {
             date_time[i++] = (char) '0';
             date_time[i++] = (char) '0';
@@ -244,6 +239,15 @@ public:
             date_time[i++] = (char) '0';
         } 
         for (int yr = year; year_p > 0; year_p /= 10) {
+            if (year / 10 == 0) {
+                date_time[i++] = (char) '0';
+            } 
+            if (year / 100 == 0) {
+                date_time[i++] = (char) '0';
+            } 
+            if (year / 1000 == 0) {
+                date_time[i++] = (char) '0';
+            } 
             date_time[i++] = (char) (yr / year_p + '0');
             yr %= year_p;
         }
@@ -295,18 +299,18 @@ public:
     }
 
     //lr2
-    friend int addition(Date d1, Date d2, char c);
+    friend int addition(Date& d1, Date& d2, char c);
 
-    friend int subtraction(Date d1, Date d2, char c);
+    friend int subtraction(Date& d1, Date& d2, char c);
 
     operator char*() {
         this->setDateTime(); 
         return date_time;
     }
 
-    friend Date operator+(Date d1, Date d2); 
+    friend Date operator+(Date& d1, Date& d2); 
 
-    friend Date operator-(Date d1, Date d2);
+    friend Date operator-(Date& d1, Date& d2);
 
     Date& operator=(const Date& d) {
         day = d.day;
@@ -315,7 +319,8 @@ public:
         h = d.h;
         m = d.m;
         s = d.s;
-        date_time = d.date_time;
+        date_time = new char[19];
+        this->setDateTime();
         count++;
         return *this;
     }
@@ -325,7 +330,7 @@ public:
     }
 
     Date(int day, int mon, int year) {
-        this->date_time = new char[i];
+        this->date_time = new char[19];
         this->setDay(day);
         this->setMonth(mon);
         this->setYear(year);
@@ -336,7 +341,7 @@ public:
     }
 
     Date(int day, int mon, int year, int h, int m, int s) {
-        this->date_time = new char[i];
+        this->date_time = new char[19];
         this->setDay(day);
         this->setMonth(mon);
         this->setYear(year);
@@ -365,7 +370,7 @@ public:
 
 int Date::count = 0;
 
-int addition(Date d1, Date d2, char c) {
+int addition(Date& d1, Date& d2, char c) {
     switch (c) {
         case 'h':
             return d1.getHour() + d2.getHour();
@@ -377,7 +382,7 @@ int addition(Date d1, Date d2, char c) {
     }
 }
 
-int subtraction(Date d1, Date d2, char c) {
+int subtraction(Date& d1, Date& d2, char c) {
     switch (c) {
         case 'h':
             return d1.getHour() - d2.getHour();
@@ -389,10 +394,10 @@ int subtraction(Date d1, Date d2, char c) {
     }
 }
 
-Date operator+(Date d1, Date d2) {
+Date operator+(Date& d1, Date& d2) {
     return Date(d1.getDay()+d2.getDay(), d1.getMonth()+d2.getMonth(), d1.getYear()+d2.getYear(), d1.getHour()+d2.getHour(), d1.getMinute()+d2.getMinute(), d1.getSecond()+d2.getSecond());
 }
 
-Date operator-(Date d1, Date d2) {
+Date operator-(Date& d1, Date& d2) {
     return Date(d1.getDay()-d2.getDay(), d1.getMonth()-d2.getMonth(), d1.getYear()-d2.getYear(), d1.getHour()-d2.getHour(), d1.getMinute()-d2.getMinute(), d1.getSecond()-d2.getSecond());
 }
