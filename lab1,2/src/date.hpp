@@ -213,6 +213,10 @@ public:
         int m_s = getSize(m), m_p = pow(10, m_s-1);
         int s_s = getSize(s), s_p = pow(10, s_s-1);
         
+        if (day == 0) {
+            date_time[i++] = (char) '0';
+            date_time[i++] = (char) '0';
+        } 
         for (int dy = day; day_p > 0; day_p /= 10) {
             if (day / 10 == 0) {
                 date_time[i++] = '0';
@@ -221,6 +225,10 @@ public:
             dy %= day_p;
         }
         date_time[i++] = '.';
+        if (mon == 0) {
+            date_time[i++] = (char) '0';
+            date_time[i++] = (char) '0';
+        } 
         for (int mn = mon; mon_p > 0; mon_p /= 10) {
             if (mon / 10 == 0) {
                 date_time[i++] = '0';
@@ -229,6 +237,12 @@ public:
             mn %= mon_p;
         }
         date_time[i++] = '.';
+        if (year == 0) {
+            date_time[i++] = (char) '0';
+            date_time[i++] = (char) '0';
+            date_time[i++] = (char) '0';
+            date_time[i++] = (char) '0';
+        } 
         for (int yr = year; year_p > 0; year_p /= 10) {
             date_time[i++] = (char) (yr / year_p + '0');
             yr %= year_p;
@@ -281,28 +295,18 @@ public:
     }
 
     //lr2
-    int* operator+(const Date& d) {
-        int* res = new int[2];
-        res[0] = this->day + d.day;
-        res[1] = this->h + d.h;
-        return res;
-    }
+    friend int addition(Date d1, Date d2, char c);
 
-    int* operator-(const Date& d) {
-        int* res = new int[2];
-        res[0] = this->day - d.day;
-        res[1] = this->h - d.h;
-        return res;
-    }
+    friend int subtraction(Date d1, Date d2, char c);
 
     operator char*() {
         this->setDateTime(); 
         return date_time;
     }
 
-    friend Date operator+(const Date& d1, const Date& d2);
+    friend Date operator+(Date d1, Date d2); 
 
-    friend Date operator-(const Date& d1, const Date& d2);
+    friend Date operator-(Date d1, Date d2);
 
     Date& operator=(const Date& d) {
         day = d.day;
@@ -361,12 +365,34 @@ public:
 
 int Date::count = 0;
 
-Date operator+(const Date& d1, const Date& d2) {
-    Date d(d1.day + d2.day, d1.mon + d2.mon, d1.year + d2.year, d1.h + d2.h, d1.m + d2.m, d1.s + d2.s);
-    return d;
+int addition(Date d1, Date d2, char c) {
+    switch (c) {
+        case 'h':
+            return d1.getHour() + d2.getHour();
+            break;
+        case 'd':
+            return d1.getDay() + d2.getDay();
+            break;
+        default: return -1;
+    }
 }
 
-Date operator-(const Date& d1, const Date& d2) {
-    Date d(d1.day - d2.day, d1.mon - d2.mon, d1.year - d2.year, d1.h - d2.h, d1.m - d2.m, d1.s - d2.s);
-    return d;
+int subtraction(Date d1, Date d2, char c) {
+    switch (c) {
+        case 'h':
+            return d1.getHour() - d2.getHour();
+            break;
+        case 'd':
+            return d1.getDay() - d2.getDay();
+            break;
+        default: return -1;
+    }
+}
+
+Date operator+(Date d1, Date d2) {
+    return Date(d1.getDay()+d2.getDay(), d1.getMonth()+d2.getMonth(), d1.getYear()+d2.getYear(), d1.getHour()+d2.getHour(), d1.getMinute()+d2.getMinute(), d1.getSecond()+d2.getSecond());
+}
+
+Date operator-(Date d1, Date d2) {
+    return Date(d1.getDay()-d2.getDay(), d1.getMonth()-d2.getMonth(), d1.getYear()-d2.getYear(), d1.getHour()-d2.getHour(), d1.getMinute()-d2.getMinute(), d1.getSecond()-d2.getSecond());
 }
