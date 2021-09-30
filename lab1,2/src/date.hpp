@@ -43,6 +43,7 @@ public:
 
     void setSecond(int s) { this->s = s; }
 
+    // кол-во разрядов числа
     int getSize(int n) {
         int size = 0;
         for (int i = n; i > 0; i /= 10) {
@@ -278,24 +279,21 @@ public:
         date_time[i++] = ':';
         if (s == 0) {
             date_time[i++] = (char) '0';
-            date_time[i] = (char) '0';
+            date_time[i++] = (char) '0';
         } 
         for (int sec = s; s_p > 0; s_p /= 10) {
             if (s / 10 == 0) {
                 date_time[i++] = (char) '0';
             } 
-            date_time[i] = (char) (sec / s_p + '0');
+            date_time[i++] = (char) (sec / s_p + '0');
             sec %= s_p;
         }
+        date_time[i] = '\0';
         return date_time;
     }
     
     void toString() {
-        this->setDateTime();
-        for (int j = 0; j <= i; j++) {
-            cout << this->getDateTime()[j];
-        }
-        cout << endl;
+        cout << this->getDateTime() << endl;
     }
 
     //lr2
@@ -319,9 +317,6 @@ public:
         h = d.h;
         m = d.m;
         s = d.s;
-        date_time = new char[19];
-        this->setDateTime();
-        count++;
         return *this;
     }
 
@@ -330,7 +325,7 @@ public:
     }
 
     Date(int day, int mon, int year) {
-        this->date_time = new char[19];
+        this->date_time = new char[20];
         this->setDay(day);
         this->setMonth(mon);
         this->setYear(year);
@@ -341,7 +336,7 @@ public:
     }
 
     Date(int day, int mon, int year, int h, int m, int s) {
-        this->date_time = new char[19];
+        this->date_time = new char[20];
         this->setDay(day);
         this->setMonth(mon);
         this->setYear(year);
@@ -393,6 +388,8 @@ int subtraction(Date& d1, Date& d2, char c) {
         default: return -1;
     }
 }
+
+
 
 Date operator+(Date& d1, Date& d2) {
     return Date(d1.getDay()+d2.getDay(), d1.getMonth()+d2.getMonth(), d1.getYear()+d2.getYear(), d1.getHour()+d2.getHour(), d1.getMinute()+d2.getMinute(), d1.getSecond()+d2.getSecond());

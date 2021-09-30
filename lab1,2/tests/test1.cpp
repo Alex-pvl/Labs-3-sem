@@ -3,7 +3,6 @@
 #include "../src/date.hpp"
 #include "catch.hpp"  
 
-// increment testing
 TEST_CASE("Testing incYear()") {
     Date d(31, 12, 2021, 23, 59, 59);
     d.incYear();
@@ -55,7 +54,6 @@ TEST_CASE("Testing incSecond()") {
     REQUIRE(d.getYear() == 2022);
 }
 
-// decrement testing
 TEST_CASE("Testing decYear()") {
     Date d(1, 3, 2000, 0, 0, 0);
     d.decYear();
@@ -102,7 +100,6 @@ TEST_CASE("Testing decSecond()") {
     REQUIRE(d.getMonth() == 2);
 }
 
-// count testing 
 TEST_CASE("Testing getCount()") {
     Date d1(1,1,1);
     Date d2(2,2,2);
@@ -111,17 +108,10 @@ TEST_CASE("Testing getCount()") {
     REQUIRE(d1.getCount() == 4);
 }
 
-// date_time testing
 TEST_CASE("Testing getDateTime()") {
     Date d(31, 12, 2021, 23, 59, 59);
-    char* arr = new char[19] {'0', '1', '.', '0', '1', '.', '2', '0', '2', '2', ' ', '0', '0', ':', '0', '0', ':', '0', '0'};
+    char ar[20] = "01.01.2022 00:00:00";
     d.incSecond();
     d.setDateTime();
-    bool isEqual = true;
-    for (int i = 0; i < 19; i++) {
-        if (arr[i] != d.getDateTime()[i]) {
-            isEqual = false;
-        }
-    } 
-    REQUIRE(isEqual); 
+    REQUIRE(!memcmp(d.getDateTime(), ar, 20)); 
 }
