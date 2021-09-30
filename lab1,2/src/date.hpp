@@ -200,8 +200,9 @@ public:
         }
     }
 
-    int i = 0;
+    
     char* setDateTime() {
+        int i = 0;
         int year = this->year, mon = this->mon, day = this->day, h = this->h, m = this->m, s = this->s;
         int year_s = getSize(year), year_p = pow(10, year_s-1); 
         int mon_s = getSize(mon), mon_p = pow(10, mon_s-1);
@@ -358,7 +359,7 @@ public:
     }
 
     ~Date() {
-        delete[] date_time;
+        //delete[] date_time;
         count--;
     }
 };
@@ -388,8 +389,6 @@ int subtraction(Date& d1, Date& d2, char c) {
         default: return -1;
     }
 }
-
-
 
 Date operator+(Date& d1, Date& d2) {
     return Date(d1.getDay()+d2.getDay(), d1.getMonth()+d2.getMonth(), d1.getYear()+d2.getYear(), d1.getHour()+d2.getHour(), d1.getMinute()+d2.getMinute(), d1.getSecond()+d2.getSecond());
