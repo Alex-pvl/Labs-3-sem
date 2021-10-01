@@ -1,18 +1,10 @@
 #include <iostream>
 #include <cmath>
+#include <stdio.h>
+#include <string.h>
 using namespace std;
 
 class Date {
-
-private:
-    int year;
-    int mon;
-    int day;
-    int h;
-    int m;
-    int s;
-    char* date_time;
-    static int count;
 
 public:
     int getYear() { return this->year; }
@@ -27,8 +19,20 @@ public:
 
     int getSecond() { return this->s; }
 
-    char* getDateTime() { return this->date_time; }
+    char* getDateTime() { 
+        char* tmp = new char[19];
+        tmp = this->date_time;
+        return tmp;
+    }
 
+    void setDateTime() {
+        sprintf(this->date_time, "%.2d.%.2d.%.4d %.2d:%.2d:%.2d", this->getDay(), this->getMonth(), this->getYear(),
+        this->getHour(), this->getMinute(), this->getSecond());
+    }
+
+    char* toString() {
+        return this->getDateTime();
+    }
     static int getCount() { return count; }
 
     void setYear(int year) { this->year = year; }
@@ -200,112 +204,15 @@ public:
         }
     }
 
-    
-    char* setDateTime() {
-        int i = 0;
-        int year = this->year, mon = this->mon, day = this->day, h = this->h, m = this->m, s = this->s;
-        int year_s = getSize(year), year_p = pow(10, year_s-1); 
-        int mon_s = getSize(mon), mon_p = pow(10, mon_s-1);
-        int day_s = getSize(day), day_p = pow(10, day_s-1);
-        int h_s = getSize(h), h_p = pow(10, h_s-1);
-        int m_s = getSize(m), m_p = pow(10, m_s-1);
-        int s_s = getSize(s), s_p = pow(10, s_s-1);
-        if (day == 0) {
-            date_time[i++] = (char) '0';
-            date_time[i++] = (char) '0';
-        } 
-        for (int dy = day; day_p > 0; day_p /= 10) {
-            if (day / 10 == 0) {
-                date_time[i++] = '0';
-            }
-            date_time[i++] = (char) (dy / day_p + '0');
-            dy %= day_p;
-        }
-        date_time[i++] = '.';
-        if (mon == 0) {
-            date_time[i++] = (char) '0';
-            date_time[i++] = (char) '0';
-        } 
-        for (int mn = mon; mon_p > 0; mon_p /= 10) {
-            if (mon / 10 == 0) {
-                date_time[i++] = '0';
-            } 
-            date_time[i++] = (char) (mn / mon_p + '0');
-            mn %= mon_p;
-        }
-        date_time[i++] = '.';
-        if (year == 0) {
-            date_time[i++] = (char) '0';
-            date_time[i++] = (char) '0';
-            date_time[i++] = (char) '0';
-            date_time[i++] = (char) '0';
-        } 
-        for (int yr = year; year_p > 0; year_p /= 10) {
-            if (year / 10 == 0) {
-                date_time[i++] = (char) '0';
-            } 
-            if (year / 100 == 0) {
-                date_time[i++] = (char) '0';
-            } 
-            if (year / 1000 == 0) {
-                date_time[i++] = (char) '0';
-            } 
-            date_time[i++] = (char) (yr / year_p + '0');
-            yr %= year_p;
-        }
-        date_time[i++] = ' ';
-        if (h == 0) {
-            date_time[i++] = (char) '0';
-            date_time[i++] = (char) '0';
-        } 
-        for (int hour = h; h_p > 0; h_p /= 10) {
-            if (h / 10 == 0) {
-                date_time[i++] = (char) '0';
-            } 
-            date_time[i++] = (char) (hour / h_p + '0');
-            hour %= h_p;
-        }
-        date_time[i++] = ':';
-        if (m == 0) {
-            date_time[i++] = (char) '0';
-            date_time[i++] = (char) '0';
-        } 
-        for (int min = m; m_p > 0; m_p /= 10) {
-            if (m / 10 == 0) {
-                date_time[i++] = (char) '0';
-            } 
-            date_time[i++] = (char) (min / m_p + '0');
-            min %= m_p;
-        }
-        date_time[i++] = ':';
-        if (s == 0) {
-            date_time[i++] = (char) '0';
-            date_time[i++] = (char) '0';
-        } 
-        for (int sec = s; s_p > 0; s_p /= 10) {
-            if (s / 10 == 0) {
-                date_time[i++] = (char) '0';
-            } 
-            date_time[i++] = (char) (sec / s_p + '0');
-            sec %= s_p;
-        }
-        date_time[i] = '\0';
-        return date_time;
-    }
-    
-    void toString() {
-        cout << this->getDateTime() << endl;
-    }
-
     //lr2
-    friend int addition(Date& d1, Date& d2, char c);
-
-    friend int subtraction(Date& d1, Date& d2, char c);
-
     operator char*() {
         this->setDateTime(); 
-        return date_time;
+        return this->getDateTime();
     }
+
+    friend Date operator+(Date& d ,int hours);
+
+    friend Date operator-(Date& d ,int hours);
 
     friend Date operator+(Date& d1, Date& d2); 
 
@@ -318,6 +225,8 @@ public:
         h = d.h;
         m = d.m;
         s = d.s;
+        this->date_time = new char[19];
+        strcpy(this->date_time, d.date_time);
         return *this;
     }
 
@@ -326,7 +235,7 @@ public:
     }
 
     Date(int day, int mon, int year) {
-        this->date_time = new char[20];
+        this->date_time = new char[19];
         this->setDay(day);
         this->setMonth(mon);
         this->setYear(year);
@@ -337,7 +246,7 @@ public:
     }
 
     Date(int day, int mon, int year, int h, int m, int s) {
-        this->date_time = new char[20];
+        this->date_time = new char[19];
         this->setDay(day);
         this->setMonth(mon);
         this->setYear(year);
@@ -354,40 +263,52 @@ public:
         this->setHour(d.h);
         this->setMinute(d.m);
         this->setSecond(d.s);
-        this->date_time = d.date_time;
+        this->date_time = new char[19];
+        strcpy(this->date_time, d.date_time);
         count++;
     }
 
     ~Date() {
-        //delete[] date_time;
+        delete[] this->date_time;
         count--;
     }
+
+private:
+    int year;
+    int mon;
+    int day;
+    int h;
+    int m;
+    int s;
+    char* date_time;
+    static int count;
 };
 
 int Date::count = 0;
 
-int addition(Date& d1, Date& d2, char c) {
-    switch (c) {
-        case 'h':
-            return d1.getHour() + d2.getHour();
-            break;
-        case 'd':
-            return d1.getDay() + d2.getDay();
-            break;
-        default: return -1;
+Date operator+(Date& d, int hours) {
+    int years_nv = hours / 8760; // не вис
+    int years_v = hours / 8784; // вис
+    int mon_31 = hours / 744;
+    int mon_30 = hours / 720;
+    int mon_29 = hours / 696;
+    int mon_28 = hours / 672;
+    int day = hours / 24;
+    if (years_nv > 0) {
+        //d.setYear(this->ge + years_nv);
     }
-}
+    return d;
+} 
 
-int subtraction(Date& d1, Date& d2, char c) {
-    switch (c) {
-        case 'h':
-            return d1.getHour() - d2.getHour();
-            break;
-        case 'd':
-            return d1.getDay() - d2.getDay();
-            break;
-        default: return -1;
-    }
+Date operator-(Date& d, int hours) {
+    int years_nv = hours / 8760; // не вис
+    int years_v = hours / 8784; // вис
+    int mon_31 = hours / 744;
+    int mon_30 = hours / 720;
+    int mon_29 = hours / 696;
+    int mon_28 = hours / 672;
+    int day = hours / 24;
+    return d;
 }
 
 Date operator+(Date& d1, Date& d2) {

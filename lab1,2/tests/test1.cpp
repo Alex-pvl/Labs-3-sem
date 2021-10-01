@@ -110,8 +110,9 @@ TEST_CASE("Testing getCount()") {
 
 TEST_CASE("Testing getDateTime()") {
     Date d(31, 12, 2021, 23, 59, 59);
-    char ar[20] = "01.01.2022 00:00:00";
+    char* ar = new char[19];
+    sprintf(ar, "%s", "01.01.2022 00:00:00");
     d.incSecond();
     d.setDateTime();
-    REQUIRE(!memcmp(d.getDateTime(), ar, 20)); 
+    REQUIRE(!memcmp(ar, d.getDateTime(), 19)); 
 }
