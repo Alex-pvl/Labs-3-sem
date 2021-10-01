@@ -3,6 +3,24 @@
 #include "../src/date.hpp"
 #include "catch.hpp"  
 
+TEST_CASE("Testing operator+ hours") {
+    Date d(31, 12, 2021, 23, 59, 59);
+    d = d + 1234;
+    d.setDateTime();
+    char* arr = new char[19];
+    sprintf(arr, "%s", "21.02.2022 09:59:59");
+    REQUIRE(!memcmp(arr, d.getDateTime(), 19));
+}
+
+TEST_CASE("Testing operator- hours") {
+    Date d(31, 12, 2021, 23, 59, 59);
+    d = d - 10234;
+    d.setDateTime();
+    char* arr = new char[19];
+    sprintf(arr, "%s", "31.10.2020 13:59:59");
+    REQUIRE(!memcmp(arr, d.getDateTime(), 19));
+}
+
 TEST_CASE("Testing Date operator+") {
     Date d1(1,1,1,1,1,1);
     Date d2(2,2,2,2,2,2);

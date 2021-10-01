@@ -2,11 +2,50 @@
 #include <cmath>
 #include <stdio.h>
 #include <string.h>
+#include <fstream>
 using namespace std;
 
 class Date {
 
 public:
+    Date() {
+        count++;
+    }
+
+    Date(int day, int mon, int year) {
+        this->date_time = new char[19];
+        this->setDay(day);
+        this->setMonth(mon);
+        this->setYear(year);
+        this->setHour(0);
+        this->setMinute(0);
+        this->setSecond(0);
+        count++;
+    }
+
+    Date(int day, int mon, int year, int h, int m, int s) {
+        this->date_time = new char[19];
+        this->setDay(day);
+        this->setMonth(mon);
+        this->setYear(year);
+        this->setHour(h);
+        this->setMinute(m);
+        this->setSecond(s);
+        count++;
+    }
+
+    Date(const Date &d) {
+        this->setDay(d.day);
+        this->setMonth(d.mon);
+        this->setYear(d.year);
+        this->setHour(d.h);
+        this->setMinute(d.m);
+        this->setSecond(d.s);
+        this->date_time = new char[19];
+        strcpy(this->date_time, d.date_time);
+        count++;
+    }
+
     int getYear() { return this->year; }
 
     int getMonth() { return this->mon; }
@@ -18,7 +57,9 @@ public:
     int getMinute() { return this->m; }
 
     int getSecond() { return this->s; }
-
+    
+    static int getCount() { return count; }
+    
     char* getDateTime() { 
         char* tmp = new char[19];
         tmp = this->date_time;
@@ -30,10 +71,7 @@ public:
         this->getHour(), this->getMinute(), this->getSecond());
     }
 
-    char* toString() {
-        return this->getDateTime();
-    }
-    static int getCount() { return count; }
+    char* toString() { return this->getDateTime(); }
 
     void setYear(int year) { this->year = year; }
 
@@ -204,15 +242,14 @@ public:
         }
     }
 
-    //lr2
     operator char*() {
         this->setDateTime(); 
         return this->getDateTime();
     }
 
-    friend Date operator+(Date& d ,int hours);
+    friend Date& operator+(Date& d ,int hours);
 
-    friend Date operator-(Date& d ,int hours);
+    friend Date& operator-(Date& d ,int hours);
 
     friend Date operator+(Date& d1, Date& d2); 
 
@@ -230,43 +267,10 @@ public:
         return *this;
     }
 
-    Date() {
-        count++;
-    }
-
-    Date(int day, int mon, int year) {
-        this->date_time = new char[19];
-        this->setDay(day);
-        this->setMonth(mon);
-        this->setYear(year);
-        this->setHour(0);
-        this->setMinute(0);
-        this->setSecond(0);
-        count++;
-    }
-
-    Date(int day, int mon, int year, int h, int m, int s) {
-        this->date_time = new char[19];
-        this->setDay(day);
-        this->setMonth(mon);
-        this->setYear(year);
-        this->setHour(h);
-        this->setMinute(m);
-        this->setSecond(s);
-        count++;
-    }
-
-    Date(const Date &d) {
-        this->setDay(d.day);
-        this->setMonth(d.mon);
-        this->setYear(d.year);
-        this->setHour(d.h);
-        this->setMinute(d.m);
-        this->setSecond(d.s);
-        this->date_time = new char[19];
-        strcpy(this->date_time, d.date_time);
-        count++;
-    }
+    // запись
+    friend ostream& operator<<(ostream& os, Date& d);
+    // чтение
+    friend istream& operator>>(istream& is, Date& d);    
 
     ~Date() {
         delete[] this->date_time;
@@ -286,28 +290,13 @@ private:
 
 int Date::count = 0;
 
-Date operator+(Date& d, int hours) {
-    int years_nv = hours / 8760; // не вис
-    int years_v = hours / 8784; // вис
-    int mon_31 = hours / 744;
-    int mon_30 = hours / 720;
-    int mon_29 = hours / 696;
-    int mon_28 = hours / 672;
-    int day = hours / 24;
-    if (years_nv > 0) {
-        //d.setYear(this->ge + years_nv);
-    }
+Date& operator+(Date& d, int hours) {
+    for (; hours > 0; hours--) d.incHour();
     return d;
 } 
 
-Date operator-(Date& d, int hours) {
-    int years_nv = hours / 8760; // не вис
-    int years_v = hours / 8784; // вис
-    int mon_31 = hours / 744;
-    int mon_30 = hours / 720;
-    int mon_29 = hours / 696;
-    int mon_28 = hours / 672;
-    int day = hours / 24;
+Date& operator-(Date& d, int hours) {
+    for (; hours > 0; hours--) d.decHour();
     return d;
 }
 
@@ -318,3 +307,16 @@ Date operator+(Date& d1, Date& d2) {
 Date operator-(Date& d1, Date& d2) {
     return Date(d1.getDay()-d2.getDay(), d1.getMonth()-d2.getMonth(), d1.getYear()-d2.getYear(), d1.getHour()-d2.getHour(), d1.getMinute()-d2.getMinute(), d1.getSecond()-d2.getSecond());
 }
+
+ostream& operator<<(ostream& os, Date& d) {
+    os << d.getDateTime();
+    return os; 
+}
+
+istream& operator>>(istream& is, Date& d) {
+    is >> d.day >> d.mon >> d.year >> d.h >> d.m >> d.s;
+    return is;
+}
+
+const char *fileName_txt = "text.txt";
+const char *fileName_bin = "binary.bin";
