@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <fstream>
+#include <iomanip>
 using namespace std;
 
 class Date {
@@ -309,7 +310,9 @@ Date operator-(Date& d1, Date& d2) {
 }
 
 ostream& operator<<(ostream& os, Date& d) {
-    os << d.getDateTime();
+    os << d.getCount() << ") " << setfill('0') << setw(2) << d.getDay() << "." << setfill('0') << setw(2) << d.getMonth()
+     << "." << setfill('0') << setw(4) << d.getYear() << " " << setfill('0') << setw(2) << d.getHour() << ":" 
+     << setfill('0') << setw(2) << d.getMinute() << ":" << setfill('0') << setw(2) << d.getSecond() << "\n";
     return os; 
 }
 
