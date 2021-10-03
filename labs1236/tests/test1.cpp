@@ -1,6 +1,6 @@
 #define CATCH_CONFIG_MAIN
 
-#include "../src/date.hpp"
+#include "../src/Date.hpp"
 #include "catch.hpp"  
 
 TEST_CASE("Testing incYear()") {

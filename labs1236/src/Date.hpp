@@ -1,10 +1,9 @@
-#include <iostream>
 #include <cmath>
 #include <stdio.h>
 #include <string.h>
 #include <fstream>
 #include <iomanip>
-using namespace std;
+#include "../exceptions/DateException.hpp"
 
 class Date {
 
@@ -74,17 +73,77 @@ public:
 
     char* toString() { return this->getDateTime(); }
 
-    void setYear(int year) { this->year = year; }
+    void setYear(int year) {
+        try
+        {
+            if (year < 0) throw DateException("Invalid Date Format, check year");
+            this->year = year;
+        }
+        catch(DateException& e)
+        {
+            cerr << e.what() << '\n';
+        }
+    }
 
-    void setMonth(int mon) { this->mon = mon; }
+    void setMonth(int mon) { 
+        try
+        {
+            if (mon > 12 || mon < 0) throw DateException("Invalid Date Format, check month");
+            this->mon = mon;
+        }
+        catch(DateException& e)
+        {
+            cerr << e.what() << '\n';
+        }
+    }
 
-    void setDay(int day) { this->day = day; }
+    void setDay(int day) {
+        try
+        {
+            if (day > 31 || day < 0) throw DateException("Invalid Date Format, check day");
+            this->day = day;
+        }
+        catch(DateException& e)
+        {
+            cerr << e.what() << '\n';
+        }
+    }
 
-    void setHour(int h) { this->h = h; }
+    void setHour(int h) {
+        try
+        {
+            if (h > 23 || h < 0) throw DateException("Invalid Date Format, check hours");
+            this->h = h;
+        }
+        catch(DateException& e)
+        {
+            cerr << e.what() << '\n';
+        }
+    }
  
-    void setMinute(int m) { this->m = m; }
+    void setMinute(int m) {
+        try
+        {
+            if (m > 59 || m < 0) throw DateException("Invalid Date Format, check minutes");
+            this->m = m;
+        }
+        catch(DateException& e)
+        {
+            cerr << e.what() << '\n';
+        }
+    }
 
-    void setSecond(int s) { this->s = s; }
+    void setSecond(int s) {
+        try
+        {
+            if (s > 59 || s < 0) throw DateException("Invalid Date Format, check seconds");
+            this->s = s;
+        }
+        catch(DateException& e)
+        {
+            cerr << e.what() << '\n';
+        }
+    }
 
     // кол-во разрядов числа
     int getSize(int n) {
@@ -310,9 +369,21 @@ Date operator-(Date& d1, Date& d2) {
 }
 
 ostream& operator<<(ostream& os, Date& d) {
-    os << d.getCount() << ") " << setfill('0') << setw(2) << d.getDay() << "." << setfill('0') << setw(2) << d.getMonth()
-     << "." << setfill('0') << setw(4) << d.getYear() << " " << setfill('0') << setw(2) << d.getHour() << ":" 
-     << setfill('0') << setw(2) << d.getMinute() << ":" << setfill('0') << setw(2) << d.getSecond() << "\n";
+    try
+    {
+        if (d.getDay() == 0 || d.getMonth() == 0 || d.getYear() == 0 || d.getHour() == 0 
+        || d.getMinute() == 0 || d.getSecond() == 0) throw DateException("Invalid Date Format");
+
+        os << setfill('0') << setw(2) << d.getDay() << "." << setfill('0') << setw(2) << d.getMonth()
+        << "." << setfill('0') << setw(4) << d.getYear() << " " << setfill('0') << setw(2) << d.getHour() << ":" 
+        << setfill('0') << setw(2) << d.getMinute() << ":" << setfill('0') << setw(2) << d.getSecond() << "\n";
+    }
+    catch(DateException& e)
+    {
+        cerr << e.what() << '\n';
+    }
+    
+    
     return os; 
 }
 

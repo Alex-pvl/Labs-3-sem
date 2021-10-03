@@ -2,7 +2,8 @@
     "files.associations": {
         "iostream": "cpp",
         "iosfwd": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "fstream": "cpp"
     },
 
     "testMate.cpp.test.executables": "a.txt",
