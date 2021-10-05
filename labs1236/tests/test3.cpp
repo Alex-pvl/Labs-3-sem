@@ -1,20 +1,32 @@
 #define CATCH_CONFIG_MAIN
 
 #include "../src/Date.hpp"
+#include "../src/Methods.hpp"
 #include "catch.hpp"  
 
 TEST_CASE("Testing <</>> text") {
     Date d(31,12,2021,12,23,45);
     ofstream out;
-    out.open(fileName_txt);
-    if (out.is_open()) {
+    try
+    {
+        out.open(fileName_txt);
         out << d;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
     }
     out.close();
     char* arr = new char[20];
-    ifstream in(fileName_txt);
-    if (in.is_open()) {
+    ifstream in;
+    try
+    {
+        in.open(fileName_txt);
         in.getline(arr, 20);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
     }
     in.close();
     d.setDateTime();
@@ -24,15 +36,26 @@ TEST_CASE("Testing <</>> text") {
 TEST_CASE("Testing <</>> binary") {
     Date d(31,12,2021,12,23,45);
     ofstream out;
-    out.open(fileName_bin);
-    if (out.is_open()) {
+    try
+    {
+        out.open(fileName_bin);
         out << d;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
     }
     out.close();
     char* arr = new char[20];
-    ifstream in(fileName_bin);
-    if (in.is_open()) {
+    ifstream in;
+    try
+    {
+        in.open(fileName_bin);
         in.getline(arr, 20);
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
     }
     in.close();
     d.setDateTime();
