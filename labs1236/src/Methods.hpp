@@ -325,7 +325,7 @@ ostream& operator<<(ostream& os, Date& d) {
     {
         cerr << e.what() << '\n';
     }    
-    return os; 
+    return os;
 }
 
 istream& operator>>(istream& is, Date& d) {

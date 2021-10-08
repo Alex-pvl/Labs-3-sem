@@ -1,6 +1,5 @@
 #define CATCH_CONFIG_MAIN
 
-#include "../src/Date.hpp"
 #include "../src/Methods.hpp"
 #include "catch.hpp"  
 
@@ -38,8 +37,8 @@ TEST_CASE("Testing <</>> binary") {
     ofstream out;
     try
     {
-        out.open(fileName_bin);
-        out << d;
+        out.open(fileName_bin, ios::binary);
+        out.write((char*)&d, sizeof(Date));
     }
     catch(const std::exception& e)
     {
@@ -50,8 +49,8 @@ TEST_CASE("Testing <</>> binary") {
     ifstream in;
     try
     {
-        in.open(fileName_bin);
-        in.getline(arr, 20);
+        in.open(fileName_bin, ios::binary);
+        in.read((char*)&d, sizeof(Date));
     }
     catch(const std::exception& e)
     {
