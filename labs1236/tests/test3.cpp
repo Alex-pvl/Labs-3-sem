@@ -60,3 +60,29 @@ TEST_CASE("Testing <</>> binary") {
     d.setDateTime();
     REQUIRE(!memcmp(arr, d.getDateTime(), 19));
 }
+
+// Date d;
+    // ofstream out;
+    // try
+    // {
+    //     cin >> d;
+    //     out.open(fileName_bin, ios::binary);
+    //     out.write((char*)&d, sizeof(Date));
+    // }
+    // catch(const std::exception& e)
+    // {
+    //     std::cerr << e.what() << '\n';
+    // }
+    // out.close();
+    // ifstream in;
+    // try
+    // {
+    //     in.open(fileName_bin, ios::binary);
+    //     in.read((char*)&d, sizeof(Date));
+    //     cout << d;
+    // }
+    // catch(const std::exception& e)
+    // {
+    //     std::cerr << e.what() << '\n';
+    // }
+    // in.close();
