@@ -7,8 +7,12 @@ public:
         this->setHours(d);
     }
 
+    Hours() {}
+
     char* getHours() { 
-        return this->hours; 
+        char *tmp = new char[10];
+        strcpy(tmp, this->hours);
+        return tmp; 
     }
 
     void setHours(Date& d) {
