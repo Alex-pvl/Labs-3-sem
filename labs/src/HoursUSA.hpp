@@ -10,9 +10,9 @@ public:
     Hours() {}
 
     char* getHours() { 
-        char *tmp = new char[10];
-        strcpy(tmp, this->hours);
-        return tmp; 
+        char *t = new char[10];
+        t = this->hours;
+        return t;
     }
 
     void setHours(Date& d) {

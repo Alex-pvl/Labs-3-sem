@@ -10,15 +10,15 @@ Date::Date() {
 }
 
 Date::Date(int day, int mon, int year) {
-        this->date_time = new char[19];
-        this->setDay(day);
-        this->setMonth(mon);
-        this->setYear(year);
-        this->setHour(0);
-        this->setMinute(0);
-        this->setSecond(0);
-        count++;
-    }
+    this->date_time = new char[19];
+    this->setDay(day);
+    this->setMonth(mon);
+    this->setYear(year);
+    this->setHour(0);
+    this->setMinute(0);
+    this->setSecond(0);
+    count++;
+}
 
 Date::Date(int day, int mon, int year, int h, int m, int s) {
         this->date_time = new char[19];
@@ -334,7 +334,7 @@ istream& operator>>(istream& is, Date& d) {
 }
 
 Date::~Date() {
-    delete[] this->date_time;
+    //delete[] this->date_time;    
     count--;
 }
 
