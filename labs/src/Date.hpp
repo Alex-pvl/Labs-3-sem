@@ -86,14 +86,18 @@ public:
 
     Date& operator=(const Date& d);
 
-    friend ostream& operator<<(ostream& os, Date& d);
+    friend ostream& operator<<(ostream& os, const Date& d);
 
-    friend istream& operator>>(istream& is, Date& d);    
+    friend istream& operator>>(istream& is, Date& d);
+
+    friend ofstream& operator<<(ofstream& os, Date& d);
+
+    friend ifstream& operator>>(ifstream& is, Date& d);    
 
 private:
-    int year;
-    int mon;
     int day;
+    int mon;
+    int year;
     int h;
     int m;
     int s;

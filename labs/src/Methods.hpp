@@ -1,11 +1,18 @@
 #include "Date.hpp"
 
 const char *fileName_txt = "text.txt";
-const char *fileName_bin = "binary.bin";
+const char *fileName_bin = "binary.dat";
 
 int Date::count = 0;
 
 Date::Date() {
+    this->date_time = new char[19];
+    this->setDay(1);
+    this->setMonth(1);
+    this->setYear(1);
+    this->setHour(0);
+    this->setMinute(0);
+    this->setSecond(0);
     count++;
 }
 
@@ -20,11 +27,11 @@ Date::Date(int day, int mon, int year) {
     count++;
 }
 
-Date::Date(int day, int mon, int year, int h, int m, int s) {
+Date::Date(int day, int mon, int year, int h, int m, int s) : Date::Date(day, mon, year) {
         this->date_time = new char[19];
-        this->setDay(day);
-        this->setMonth(mon);
-        this->setYear(year);
+        // this->setDay(day);
+        // this->setMonth(mon);
+        // this->setYear(year);
         this->setHour(h);
         this->setMinute(m);
         this->setSecond(s);
@@ -102,7 +109,7 @@ void Date::setDay(int day) {
     }
     catch(DateException& e)
     {
-        cerr << e.what() << '\n';
+        cout<< e.what() << '\n';
     }
 }
 
@@ -313,18 +320,27 @@ Date operator-(Date& d1, Date& d2) {
     return Date(d1.getDay()-d2.getDay(), d1.getMonth()-d2.getMonth(), d1.getYear()-d2.getYear(), d1.getHour()-d2.getHour(), d1.getMinute()-d2.getMinute(), d1.getSecond()-d2.getSecond());
 }
 
-ostream& operator<<(ostream& os, Date& d) {
-    try
-    {
-        if (d.getDay() == 0 || d.getMonth() == 0 || d.getYear() == 0) throw DateException("Invalid Date Format");
-        os << setfill('0') << setw(2) << d.getDay() << "." << setfill('0') << setw(2) << d.getMonth()
-        << "." << setfill('0') << setw(4) << d.getYear() << " " << setfill('0') << setw(2) << d.getHour() << ":" 
-        << setfill('0') << setw(2) << d.getMinute() << ":" << setfill('0') << setw(2) << d.getSecond() << "\n";
+
+
+ofstream& operator<<(ofstream& os, Date& d) {  
+    os.open(fileName_bin, ios::binary | ios::app | ios::out);
+    os.write(reinterpret_cast<char*>(&d), sizeof(d));
+    os.close();
+    return os;
+}
+
+ifstream& operator>>(ifstream& in, Date& d) {
+    in.open(fileName_bin, ios::binary | ios::app);
+    while (in.read(reinterpret_cast<char*>(&d), sizeof(d))) {
+        if (in.eof()) break;
     }
-    catch(DateException& e)
-    {
-        cerr << e.what() << '\n';
-    }    
+    in.close();
+    return in;
+}
+
+ostream& operator<<(ostream& os, const Date& d) {  
+    os << d.day << " " << d.mon << " " << d.year << " "
+       << d.h << " " << d.m << " " << d.s << "\n";
     return os;
 }
 
@@ -334,7 +350,7 @@ istream& operator>>(istream& is, Date& d) {
 }
 
 Date::~Date() {
-    //delete[] this->date_time;    
+    delete[] this->date_time;    
     count--;
 }
 
