@@ -86,7 +86,7 @@ public:
 
     Date& operator=(const Date& d);
 
-    friend ostream& operator<<(ostream& os, const Date& d);
+    friend ostream& operator<<(ostream& os, Date& d);
 
     friend istream& operator>>(istream& is, Date& d);
 

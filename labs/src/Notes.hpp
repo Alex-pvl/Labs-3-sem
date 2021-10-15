@@ -5,7 +5,6 @@ public:
     Notes(Date &d, char *note) : Date(d) {
         this->note = new char[strlen(note)];
         this->setNote(note);
-        cout << __FUNCTION__ << endl;
     } 
 
     char* getNote() {

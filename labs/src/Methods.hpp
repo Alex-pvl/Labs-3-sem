@@ -29,9 +29,6 @@ Date::Date(int day, int mon, int year) {
 
 Date::Date(int day, int mon, int year, int h, int m, int s) : Date::Date(day, mon, year) {
         this->date_time = new char[19];
-        // this->setDay(day);
-        // this->setMonth(mon);
-        // this->setYear(year);
         this->setHour(h);
         this->setMinute(m);
         this->setSecond(s);
@@ -349,7 +346,6 @@ ifstream& readFromBin(ifstream& fin, Date& d) {
         if (!fin.is_open()) throw DateException("Unable to open this file\n");
         else {
             cout << "File opened\n";
-            
             fin.read((char*)&d, sizeof(Date)); 
             d.setDateTime();
         }
@@ -358,18 +354,60 @@ ifstream& readFromBin(ifstream& fin, Date& d) {
     {
         cerr << e.what() << '\n';
     }
-    
     return fin;
 }
 
-ostream& operator<<(ostream& os, const Date& d) {  
-    os << d.day << " " << d.mon << " " << d.year << " "
-       << d.h << " " << d.m << " " << d.s << "\n";
+ostream& operator<<(ostream& os, Date& d) {  
+    d.setDateTime();
+    os << d.getDateTime() << "\n";
     return os;
 }
 
 istream& operator>>(istream& is, Date& d) {
-    is >> d.day >> d.mon >> d.year >> d.h >> d.m >> d.s;
+    int day, mon, year, h, m, s;
+    char date[10], time[8];
+    is >> date;
+    if (date[0] == 0) {
+        day = date[1] - '0';
+    } else {
+        day = 10 * (date[0]-'0') + date[1] - '0';
+    }
+    if (date[3] == 0) {
+        mon = date[4] - '0';
+    } else {
+        mon = 10 * (date[3] - '0') + date[4] - '0';
+    }
+    if (date[6] == 0) {
+        if (date[7] == 0) {
+            if (date[8] == 0) {
+                year = date[9] - '0';
+            } else {
+                year = 10 * (date[8] - '0') + date[9] - '0';
+            }
+        } else {
+            year = 100 * (date[7] - '0') + 10 * (date[8] - '0') + date[9] - '0';
+        }
+    } else {
+        year = 1000 * (date[6] - '0') + 100 * (date[7] - '0') + 10 * (date[8] - '0') + date[9] - '0';
+    }
+    d.setDay(day); d.setMonth(mon); d.setYear(year);
+    is >> time;
+    if (time[0] == 0) {
+        h = time[1] - '0';
+    } else {
+        h = 10 * (time[0] - '0') + time[1] - '0';
+    }
+    if (time[3] == 0) {
+        m = time[4] - '0';
+    } else {
+        m = 10 * (time[3] - '0') + time[4] - '0';
+    }
+    if (time[6] == 0) {
+        s = time[7] - '0';
+    } else {
+        s = 10 * (time[6] - '0') + time[7] - '0';
+    }
+    d.setHour(h); d.setMinute(m); d.setSecond(s);
     d.setDateTime();
     return is;
 }
