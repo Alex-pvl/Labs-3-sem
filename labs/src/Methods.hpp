@@ -13,6 +13,7 @@ Date::Date() {
     this->setHour(0);
     this->setMinute(0);
     this->setSecond(0);
+    cout << __FUNCTION__ << endl;
     count++;
 }
 
@@ -24,6 +25,7 @@ Date::Date(int day, int mon, int year) {
     this->setHour(0);
     this->setMinute(0);
     this->setSecond(0);
+    cout << __FUNCTION__ << endl;
     count++;
 }
 
@@ -35,6 +37,7 @@ Date::Date(int day, int mon, int year, int h, int m, int s) : Date::Date(day, mo
         this->setHour(h);
         this->setMinute(m);
         this->setSecond(s);
+        cout << __FUNCTION__ << endl;
         count++;
     }
 
@@ -47,6 +50,7 @@ Date::Date(const Date &d) {
         this->setSecond(d.s);
         this->date_time = new char[19];
         strcpy(this->date_time, d.date_time);
+        cout << __FUNCTION__ << endl;
         count++;
     }
 
@@ -322,20 +326,12 @@ Date operator-(Date& d1, Date& d2) {
 
 
 
-ofstream& operator<<(ofstream& os, Date& d) {  
-    os.open(fileName_bin, ios::binary | ios::app | ios::out);
-    os.write(reinterpret_cast<char*>(&d), sizeof(d));
-    os.close();
-    return os;
+ofstream& writeToBin(ofstream& fout, const Date& d) {
+    return fout;
 }
 
-ifstream& operator>>(ifstream& in, Date& d) {
-    in.open(fileName_bin, ios::binary | ios::app);
-    while (in.read(reinterpret_cast<char*>(&d), sizeof(d))) {
-        if (in.eof()) break;
-    }
-    in.close();
-    return in;
+ifstream& readFromBin(ifstream& fin, Date& d) {
+    return fin;
 }
 
 ostream& operator<<(ostream& os, const Date& d) {  

@@ -90,9 +90,9 @@ public:
 
     friend istream& operator>>(istream& is, Date& d);
 
-    friend ofstream& operator<<(ofstream& os, Date& d);
+    friend ofstream& writeToBin(ofstream& fout, const Date& d);
 
-    friend ifstream& operator>>(ifstream& is, Date& d);    
+    friend ifstream& readFromBin(ifstream& fin, Date& d);
 
 private:
     int day;

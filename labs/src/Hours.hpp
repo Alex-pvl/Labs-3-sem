@@ -7,11 +7,11 @@ public:
         this->setHours();
     }
 
-    Hours() {}
+    Hours() : Date() { this->setHours(); }
 
     char* getHours() { 
         char *t = new char[10];
-        t = this->hours;
+        strcpy(t, this->hours);
         return t;
     }
 
