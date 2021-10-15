@@ -1,7 +1,7 @@
 #include "Date.hpp"
 
-const char *fileName_txt = "text.txt";
-const char *fileName_bin = "binary.dat";
+// const char *fileName_txt = "text.txt";
+// const char *fileName_bin = "binary.dat";
 
 int Date::count = 0;
 
@@ -13,7 +13,6 @@ Date::Date() {
     this->setHour(0);
     this->setMinute(0);
     this->setSecond(0);
-    cout << __FUNCTION__ << endl;
     count++;
 }
 
@@ -25,7 +24,6 @@ Date::Date(int day, int mon, int year) {
     this->setHour(0);
     this->setMinute(0);
     this->setSecond(0);
-    cout << __FUNCTION__ << endl;
     count++;
 }
 
@@ -37,7 +35,6 @@ Date::Date(int day, int mon, int year, int h, int m, int s) : Date::Date(day, mo
         this->setHour(h);
         this->setMinute(m);
         this->setSecond(s);
-        cout << __FUNCTION__ << endl;
         count++;
     }
 
@@ -50,7 +47,6 @@ Date::Date(const Date &d) {
         this->setSecond(d.s);
         this->date_time = new char[19];
         strcpy(this->date_time, d.date_time);
-        cout << __FUNCTION__ << endl;
         count++;
     }
 
@@ -75,7 +71,7 @@ char* Date::getDateTime() {
     }
 
 void Date::setDateTime() {
-    sprintf(this->date_time, "%.2d.%.2d.%.4d %.2d:%.2d:%.2d", this->getDay(), this->getMonth(), this->getYear(),
+    sprintf(this->date_time, "%.2d/%.2d/%.4d %.2d:%.2d:%.2d", this->getDay(), this->getMonth(), this->getYear(),
     this->getHour(), this->getMinute(), this->getSecond());
 }
 
@@ -327,10 +323,42 @@ Date operator-(Date& d1, Date& d2) {
 
 
 ofstream& writeToBin(ofstream& fout, const Date& d) {
+    try
+    {
+        if (!fout.is_open()) throw DateException("Unadle to open this file\n");
+        else {
+            cout << "File opened\n";
+            fout.write((char*)&d.day, sizeof(int));
+            fout.write((char*)&d.mon, sizeof(int));
+            fout.write((char*)&d.year, sizeof(int));
+            fout.write((char*)&d.h, sizeof(int));
+            fout.write((char*)&d.m, sizeof(int));
+            fout.write((char*)&d.s, sizeof(int));
+        }
+    }
+    catch(DateException& e)
+    {
+        cerr << e.what() << '\n';
+    }
     return fout;
 }
 
 ifstream& readFromBin(ifstream& fin, Date& d) {
+    try
+    {
+        if (!fin.is_open()) throw DateException("Unable to open this file\n");
+        else {
+            cout << "File opened\n";
+            
+            fin.read((char*)&d, sizeof(Date)); 
+            d.setDateTime();
+        }
+    }
+    catch(DateException& e)
+    {
+        cerr << e.what() << '\n';
+    }
+    
     return fin;
 }
 
@@ -342,6 +370,7 @@ ostream& operator<<(ostream& os, const Date& d) {
 
 istream& operator>>(istream& is, Date& d) {
     is >> d.day >> d.mon >> d.year >> d.h >> d.m >> d.s;
+    d.setDateTime();
     return is;
 }
 
