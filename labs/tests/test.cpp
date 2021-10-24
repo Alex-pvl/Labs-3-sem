@@ -1,5 +1,8 @@
+#pragma once
 #define CATCH_CONFIG_MAIN
 
+#include "../src/Methods.hpp"
+#include "../src/Hours.hpp"
 #include "../src/Notes.hpp"
 #include "catch.hpp" 
 
@@ -172,11 +175,13 @@ TEST_CASE("Testing << text") {
     Date d(12,2,2021,12,45,59);
     fstream f("testTxt.txt", fstream::out | fstream::app);
     f << d;
-    REQUIRE(true);
+    REQUIRE(f.is_open());
 }
 
-TEST_CASE("Testing >> text") {
-    Date d(12,2,2021,12,45,59); Date buff; d.setDateTime();
+TEST_CASE("Testing <</>> text") {
+    Date d(12,2,2021,12,45,59); 
+    Date buff;
+    d.setDateTime();
     fstream f("testTxt.txt", fstream::app | fstream::in);
     f >> buff;
     REQUIRE(!memcmp(d.getDateTime(), buff.getDateTime(), 19));
@@ -186,7 +191,7 @@ TEST_CASE("Testing << binary") {
     Date d(13, 5, 2001, 10, 4, 59);
     ofstream fout("testBinary.dat", ofstream::binary | ofstream::out | ofstream::app);
     writeToBin(fout, d);
-    REQUIRE(true);
+    REQUIRE(fout.is_open());
 }
 
 TEST_CASE("Testing >> binary") {
@@ -207,7 +212,6 @@ TEST_CASE("Testing Hours") {
     strcpy(s1, "09PM:12:43");
     bool isEqual = !memcmp(s, h.getHours(), 10) && !memcmp(s1, h1.getHours(), 10);
     REQUIRE(isEqual);
-
 }
 
 TEST_CASE("Testing Notes") {

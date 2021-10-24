@@ -1,3 +1,4 @@
+#pragma once
 #include <cmath>
 #include <stdio.h>
 #include <string.h>
@@ -93,6 +94,12 @@ public:
     friend ofstream& writeToBin(ofstream& fout, const Date& d);
 
     friend ifstream& readFromBin(ifstream& fin, Date& d);
+
+    Date* next;
+
+    virtual char* print();
+
+    virtual Date* copy();
 
 private:
     int day;

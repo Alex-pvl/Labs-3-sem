@@ -1,7 +1,10 @@
-#include "Hours.hpp"
+#pragma once
+#include "Methods.hpp"
 
 class Notes : public Date {
 public:
+    Notes() : Date() {}
+
     Notes(Date &d, char *note) : Date(d) {
         this->note = new char[strlen(note)];
         this->setNote(note);
@@ -19,7 +22,19 @@ public:
         this->getHour(), this->getMinute(), this->getSecond(), note);
     }
 
+
     ~Notes() { delete[] this->note; }
+
+    Notes* next;
+
+    char* print() {
+        return this->getNote();
+    }
+
+    Date* copy() {
+        Date* tmp = new Notes(*this);
+        return tmp;
+    }
 
 private:
     char *note;

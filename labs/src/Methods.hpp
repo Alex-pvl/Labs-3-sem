@@ -1,7 +1,5 @@
+#pragma once
 #include "Date.hpp"
-
-// const char *fileName_txt = "text.txt";
-// const char *fileName_bin = "binary.dat";
 
 int Date::count = 0;
 
@@ -346,7 +344,7 @@ ifstream& readFromBin(ifstream& fin, Date& d) {
         if (!fin.is_open()) throw DateException("Unable to open this file\n");
         else {
             cout << "File opened\n";
-            fin.read((char*)&d, sizeof(Date)); 
+            fin.read((char*)&d, sizeof(Date));
             d.setDateTime();
         }
     }
@@ -427,4 +425,13 @@ Date& Date::operator=(const Date& d) {
     this->date_time = new char[19];
     strcpy(this->date_time, d.date_time);
     return *this;
+}
+
+char* Date::print() {
+    return this->getDateTime();
+}
+
+Date* Date::copy() {
+    Date* tmp = new Date(*this);
+    return tmp;
 }

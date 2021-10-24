@@ -1,3 +1,4 @@
+#pragma once
 #include "Methods.hpp"
 
 class Hours : public Date {
@@ -24,6 +25,18 @@ public:
     }
 
     ~Hours() { delete[] this->hours; }
+
+    Hours* next;
+
+    char* print() {
+        return this->getHours();
+    }
+
+    Date* copy() {
+        Date* tmp = new Hours(*this);
+        return tmp;
+    }
+
 private:
     char* hours;
 };
