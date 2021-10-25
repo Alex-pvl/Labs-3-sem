@@ -61,7 +61,7 @@ int Date::getCount() { return count; }
 
 char* Date::getDateTime() { 
         char* tmp = new char[19];
-        tmp = this->date_time;
+        strcpy(tmp, this->date_time);
         return tmp;
     }
 
@@ -427,8 +427,9 @@ Date& Date::operator=(const Date& d) {
     return *this;
 }
 
-char* Date::print() {
-    return this->getDateTime();
+void Date::print() {
+    this->setDateTime();
+    cout << "Date:\n" << this->getDateTime() << endl;
 }
 
 Date* Date::copy() {

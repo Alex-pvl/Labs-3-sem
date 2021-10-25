@@ -18,7 +18,7 @@ public:
 
     void setNote(char *note) {
         this->note = new char[19+strlen(note)+1];
-        sprintf(this->note, "%.2d.%.2d.%.4d %.2d:%.2d:%.2d\n%s", this->getDay(), this->getMonth(), this->getYear(),
+        sprintf(this->note, "%.2d/%.2d/%.4d %.2d:%.2d:%.2d\n%s", this->getDay(), this->getMonth(), this->getYear(),
         this->getHour(), this->getMinute(), this->getSecond(), note);
     }
 
@@ -27,8 +27,8 @@ public:
 
     Notes* next;
 
-    char* print() {
-        return this->getNote();
+    void print() {
+        cout << "Notes:\n" << this->getNote() << endl;
     }
 
     Date* copy() {

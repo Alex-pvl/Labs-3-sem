@@ -28,8 +28,8 @@ public:
 
     Hours* next;
 
-    char* print() {
-        return this->getHours();
+    void print() {
+        cout << "Hours:\n" << this->getHours() << endl;
     }
 
     Date* copy() {

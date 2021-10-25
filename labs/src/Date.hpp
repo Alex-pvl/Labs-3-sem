@@ -97,7 +97,7 @@ public:
 
     Date* next;
 
-    virtual char* print();
+    virtual void print();
 
     virtual Date* copy();
 
@@ -109,5 +109,5 @@ private:
     int m;
     int s;
     char* date_time;
-    static int count;
+    static int count;  
 };

@@ -4,61 +4,6 @@
 #include "Hours.hpp"
 #include "Notes.hpp"
 
-
-
-// class Stack {
-// public:
-//     Stack() : _size(0), root(nullptr) {}
-
-//     void push(Date *d) {
-//         Node *newnode = new Node;
-//         newnode->d = d;
-//         newnode->next = root;
-//         root = newnode;
-//         _size++;
-//     }
-
-//     Date& top() {
-//         if (empty()) {
-//             throw length_error("stack is empty!");
-//         }
-//         return *(root->d);
-//     }
-
-//     void pop() {
-//         if (empty()) {
-//             throw length_error("stack is empty!");
-//         }
-//         Node *deletenode = root;
-//         root = deletenode->next;
-//         delete deletenode;
-//         _size--;
-//     }
-
-//     bool empty() const {
-//         return root == nullptr;
-//     }
-
-//     int size() {
-//         return this->_size;
-//     }
-
-//     ~Stack() {
-//         while (!empty()) {
-//             pop();
-//         }
-//     }
-
-// private:
-//     struct Node {
-//         Date *d;
-//         Node *next;
-//     };
-
-//     int _size;
-//     Node *root;
-// };
-
 class stack {
 public:
     stack() : _size(0), root(nullptr) {}
@@ -72,15 +17,25 @@ public:
     }
 
     Date* top() {
-        if (empty()) {
-            throw runtime_error("stack is empty!");
+        try
+        {
+            if (empty()) throw runtime_error("stack is empty!");
+        }
+        catch(const exception& e)
+        {
+            cerr << e.what() << '\n';
         }
         return root;
     }
 
     void pop() {
-        if (empty()) {
-            throw runtime_error("stack is empty!");
+        try
+        {
+            if (empty()) throw runtime_error("stack is empty!");
+        }
+        catch(const exception& e)
+        {
+            cerr << e.what() << '\n';
         }
         Date *deleteDate = root;
         root = root->next;
@@ -90,7 +45,8 @@ public:
 
     void show() {
         while (!empty()) {
-            cout << top()->print() << endl;
+            top()->print();
+            cout << endl;
             pop();
         }
     }
