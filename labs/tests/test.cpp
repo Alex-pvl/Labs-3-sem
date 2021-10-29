@@ -178,7 +178,7 @@ TEST_CASE("Testing << text") {
     REQUIRE(f.is_open());
 }
 
-TEST_CASE("Testing <</>> text") {
+TEST_CASE("Testing >> text") {
     Date d(12,2,2021,12,45,59); 
     Date buff;
     d.setDateTime();
@@ -195,7 +195,9 @@ TEST_CASE("Testing << binary") {
 }
 
 TEST_CASE("Testing >> binary") {
-    Date d(13, 5, 2001, 10, 4, 59); Date buff; d.setDateTime();
+    Date d(13, 5, 2001, 10, 4, 59); 
+    Date buff;
+    d.setDateTime();
     ifstream fin("testBinary.dat", ifstream::binary | ifstream::in | ifstream::app);
     readFromBin(fin, buff);
     REQUIRE(!memcmp(d.getDateTime(), buff.getDateTime(), 19));
