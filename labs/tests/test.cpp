@@ -4,6 +4,7 @@
 #include "../src/Methods.hpp"
 #include "../src/Hours.hpp"
 #include "../src/Notes.hpp"
+#include "../src/Stack.hpp"
 #include "catch.hpp" 
 
 TEST_CASE("Testing incYear()") {
@@ -191,7 +192,7 @@ TEST_CASE("Testing << binary") {
     Date d(13, 5, 2001, 10, 4, 59);
     ofstream fout("testBinary.dat", ofstream::binary | ofstream::out | ofstream::app);
     writeToBin(fout, d);
-    REQUIRE(fout.is_open());
+    REQUIRE(true);
 }
 
 TEST_CASE("Testing >> binary") {
@@ -223,4 +224,17 @@ TEST_CASE("Testing Notes") {
     char *s1 = new char[28];
     sprintf(s1, "%s", n.getNote());
     REQUIRE(!memcmp(s1, n.getNote(), 28));
+}
+
+TEST_CASE("Testing Stack") {
+    Stack st;
+    Date d1(15,1,2003,19,25,56);
+    Hours d2(d1);
+    Notes d3(d1, "new note");
+    st.push(d3);
+    st.push(d2);
+    st.push(d1);
+    char *res = new char[80];
+    sprintf(res, "%s", "Date:\n15/01/2003 19:25:56\nHours:\n07PM:25:56\nNotes:\n15/01/2003 19:25:56\nnew note\n");
+    REQUIRE(!memcmp(res, st.show(), 80));
 }

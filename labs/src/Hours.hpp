@@ -25,16 +25,15 @@ public:
     }
 
     ~Hours() { delete[] this->hours; }
-
-    Hours* next;
-
-    void print() {
-        cout << "Hours:\n" << this->getHours() << endl;
+  
+    char* toString() { 
+        char *res = new char[17];
+        sprintf(res, "%s%s", "Hours:\n", this->getHours()); 
+        return res; 
     }
 
-    Date* copy() {
-        Date* tmp = new Hours(*this);
-        return tmp;
+    int getSize() {
+        return strlen(this->toString());
     }
 
 private:

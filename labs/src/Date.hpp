@@ -37,7 +37,7 @@ public:
 
     void setDateTime();
 
-    char* toString();
+    virtual char* toString();
 
     void setYear(int year);
 
@@ -95,11 +95,7 @@ public:
 
     friend ifstream& readFromBin(ifstream& fin, Date& d);
 
-    Date* next;
-
-    virtual void print();
-
-    virtual Date* copy();
+    virtual int getSize();
 
 private:
     int day;

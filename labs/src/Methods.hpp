@@ -61,7 +61,7 @@ int Date::getCount() { return count; }
 
 char* Date::getDateTime() { 
         char* tmp = new char[19];
-        strcpy(tmp, this->date_time);
+        tmp = this->date_time;
         return tmp;
     }
 
@@ -70,7 +70,12 @@ void Date::setDateTime() {
     this->getHour(), this->getMinute(), this->getSecond());
 }
 
-char* Date::toString() { return this->getDateTime(); }
+char* Date::toString() { 
+    char *res = new char[25];
+    this->setDateTime();
+    sprintf(res, "%s%s", "Date:\n", this->getDateTime()); 
+    return res; 
+}
 
 void Date::setYear(int year) {
     try
@@ -329,6 +334,8 @@ ofstream& writeToBin(ofstream& fout, const Date& d) {
             fout.write((char*)&d.h, sizeof(int));
             fout.write((char*)&d.m, sizeof(int));
             fout.write((char*)&d.s, sizeof(int));
+            
+            fout.close();
         }
     }
     catch(DateException& e)
@@ -344,8 +351,14 @@ ifstream& readFromBin(ifstream& fin, Date& d) {
         if (!fin.is_open()) throw DateException("Unable to open this file\n");
         else {
             cout << "File opened\n";
-            fin.read((char*)&d, sizeof(Date));
+            fin.read((char*)&d.day, sizeof(int));
+            fin.read((char*)&d.mon, sizeof(int));
+            fin.read((char*)&d.year, sizeof(int));
+            fin.read((char*)&d.h, sizeof(int));
+            fin.read((char*)&d.m, sizeof(int));
+            fin.read((char*)&d.s, sizeof(int));
             d.setDateTime();
+            fin.close();
         }
     }
     catch(DateException& e)
@@ -427,12 +440,6 @@ Date& Date::operator=(const Date& d) {
     return *this;
 }
 
-void Date::print() {
-    this->setDateTime();
-    cout << "Date:\n" << this->getDateTime() << endl;
-}
-
-Date* Date::copy() {
-    Date* tmp = new Date(*this);
-    return tmp;
+int Date::getSize() {
+    return strlen(this->toString());
 }

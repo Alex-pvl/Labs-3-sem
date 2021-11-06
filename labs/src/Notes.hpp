@@ -3,7 +3,9 @@
 
 class Notes : public Date {
 public:
-    Notes() : Date() {}
+    Notes() : Date() {
+        this->note = new char[1];
+    }
 
     Notes(Date &d, char *note) : Date(d) {
         this->note = new char[strlen(note)];
@@ -12,7 +14,7 @@ public:
 
     char* getNote() {
         char *tmp = new char[19+strlen(this->note)+1];
-        tmp = this->note;
+        strcpy(tmp, this->note);
         return tmp;
     }
 
@@ -22,18 +24,16 @@ public:
         this->getHour(), this->getMinute(), this->getSecond(), note);
     }
 
+    char* toString() { 
+        char *res = new char[7+strlen(this->note)];
+        sprintf(res, "%s%s", "Notes:\n", this->getNote()); 
+        return res; 
+    }
 
     ~Notes() { delete[] this->note; }
 
-    Notes* next;
-
-    void print() {
-        cout << "Notes:\n" << this->getNote() << endl;
-    }
-
-    Date* copy() {
-        Date* tmp = new Notes(*this);
-        return tmp;
+    int getSize() {
+        return strlen(this->toString());
     }
 
 private:
