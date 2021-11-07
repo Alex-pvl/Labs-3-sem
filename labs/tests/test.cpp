@@ -5,6 +5,7 @@
 #include "../src/Hours.hpp"
 #include "../src/Notes.hpp"
 #include "../src/Stack.hpp"
+#include "../src/Template.hpp"
 #include "catch.hpp" 
 
 TEST_CASE("Testing incYear()") {
@@ -231,10 +232,50 @@ TEST_CASE("Testing Stack") {
     Date d1(15,1,2003,19,25,56);
     Hours d2(d1);
     Notes d3(d1, "new note");
-    st.push(d3);
-    st.push(d2);
     st.push(d1);
+    st.push(d2);
+    st.push(d3);
     char *res = new char[80];
-    sprintf(res, "%s", "Date:\n15/01/2003 19:25:56\nHours:\n07PM:25:56\nNotes:\n15/01/2003 19:25:56\nnew note\n");
+    sprintf(res, "%s", "Notes:\n15/01/2003 19:25:56\nnew note\nHours:\n07PM:25:56\nDate:\n15/01/2003 19:25:56\n");
     REQUIRE(!memcmp(res, st.show(), 80));
+}
+
+TEST_CASE("Testing Template Stack") {
+    char* res = new char[244];
+    sprintf(res, "");
+
+    StackT<Date> st1;
+    Date d1(15,1,2003,19,25,56);
+    Date d2(10,2,2034,14,35,16);
+    Date d3(26,3,2021,5,16,27);
+    st1.push(d1);
+    st1.push(d2);
+    st1.push(d3);
+
+    StackT<Hours> st2;
+    Hours h1(d1);
+    Hours h2(d2);
+    Hours h3(d3);
+    st2.push(h1);
+    st2.push(h2);
+    st2.push(h3);
+
+    StackT<Notes> st3;
+    Notes n1(d1, "new note1");
+    Notes n2(d2, "new note2");
+    Notes n3(d3, "new note3");
+    st3.push(n1);
+    st3.push(n2);
+    st3.push(n3);
+
+    strcat(res, st1.show());
+    strcat(res, st2.show());
+    strcat(res, st3.show());
+
+    char* tmp = new char[244];
+    sprintf(tmp, "%s%s%s", "Date:\n26/03/2021 05:16:27\nDate:\n10/02/2034 14:35:16\nDate:\n15/01/2003 19:25:56\n", 
+    "Hours:\n05AM:16:27\nHours:\n02PM:35:16\nHours:\n07PM:25:56\n", 
+    "Notes:\n26/03/2021 05:16:27\nnew note3\nNotes:\n10/02/2034 14:35:16\nnew note2\nNotes:\n15/01/2003 19:25:56\nnew note1\n");
+
+    REQUIRE(!memcmp(res, tmp, 244));
 }

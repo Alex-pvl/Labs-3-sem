@@ -1,32 +1,28 @@
 #pragma once
 #include "Date.hpp"
-#include "Methods.hpp"
 #include "Hours.hpp"
 #include "Notes.hpp"
+#include "Methods.hpp"
 
-class Stack {
+template <class T> 
+class StackT {
 public:
-    Stack();
-    void push(Date data);
-    void push(Hours data);
-    void push(Notes data);
+    StackT();
+    void push(T data);
     void pop();
     char* show();
     bool empty();
     int size();
-    ~Stack();
-    
+    ~StackT();
 private:
     class Node {
     public:
         Node();
-        Node(Date data);
-        Node(Hours data);
-        Node(Notes data);
+        Node(T data);
         ~Node();
-        friend class Stack;
+        friend class StackT;
     private:
-        Date *data;
+        T* data;
         Node *next;
     };
 
@@ -34,33 +30,22 @@ private:
     Node *root;
 };
 
-Stack::Stack() {
+template <class T>
+StackT<T>::StackT() {
     this->_size = 0;
-    this->root = nullptr;
+    this->root = nullptr;    
 }
 
-void Stack::push(Date data) {
+template <class T>
+void StackT<T>::push(T data) {
     Node *temp = new Node(data);
     temp->next = root;
     root = temp;
-    _size++;
+    _size++;    
 }
 
-void Stack::push(Hours data) {
-    Node *temp = new Node(data);
-    temp->next = root;
-    root = temp;
-    _size++;
-}
-
-void Stack::push(Notes data) {
-    Node *temp = new Node(data);
-    temp->next = root;
-    root = temp;
-    _size++;
-}
-
-void Stack::pop() {
+template <class T>
+void StackT<T>::pop() {
     try {
         if(empty()) throw runtime_error("stack is empty.");
     }
@@ -71,10 +56,11 @@ void Stack::pop() {
     Node *deleteNode = root;
     root = root->next;
     delete deleteNode;
-    _size--;
+    _size--;    
 }
 
-char* Stack::show() {
+template <class T>
+char* StackT<T>::show() {
     Node *a = root;
     int s = 0;
     while(a != nullptr) {
@@ -89,43 +75,39 @@ char* Stack::show() {
         strcat(res, "\n");
         ptr = ptr->next;
     }
-    return res;
+    return res;    
 }
 
-bool Stack::empty() {
+template <class T>
+bool StackT<T>::empty() {
     return this->root == nullptr;
 }
 
-int Stack::size() {
+template <class T>
+int StackT<T>::size() {
     return this->_size;
 }
 
-Stack::~Stack() {
+template <class T>
+StackT<T>::~StackT() {
     while(!empty()) {
         pop();
     }
 }
 
-Stack::Node::Node() {
+template <class T>
+StackT<T>::Node::Node() {
     this->data = new Date();
     this->next = nullptr;
 }
 
-Stack::Node::Node(Date data) {
-    this->data = new Date(data);
+template <class T>
+StackT<T>::Node::Node(T data) {
+    this->data = new T(data);
     this->next = nullptr;
 }
 
-Stack::Node::Node(Hours data) {
-    this->data = new Hours(data);
-    this->next = nullptr;
-}
-
-Stack::Node::Node(Notes data) {
-    this->data = new Notes(data);
-    this->next = nullptr;
-}
-
-Stack::Node::~Node() {
+template <class T>
+StackT<T>::Node::~Node() {
     delete this->data;
 }
