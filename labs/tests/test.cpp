@@ -182,7 +182,7 @@ TEST_CASE("Testing << text") {
 
 TEST_CASE("Testing >> text") {
     Date d(12,2,2021,12,45,59); 
-    Date buff;
+    Date buff; 
     d.setDateTime();
     fstream f("testTxt.txt", fstream::app | fstream::in);
     f >> buff;
@@ -227,7 +227,7 @@ TEST_CASE("Testing Notes") {
     REQUIRE(!memcmp(s1, n.getNote(), 28));
 }
 
-TEST_CASE("Testing Stack") {
+TEST_CASE("Testing Stack push") {
     Stack st;
     Date d1(15,1,2003,19,25,56);
     Hours d2(d1);
@@ -240,10 +240,23 @@ TEST_CASE("Testing Stack") {
     REQUIRE(!memcmp(res, st.show(), 80));
 }
 
-TEST_CASE("Testing Template Stack") {
-    char* res = new char[244];
-    sprintf(res, "");
+TEST_CASE("Testing Stack pop") {
+    Stack st;
+    Date d1(15,1,2003,19,25,56);
+    Hours d2(d1);
+    Notes d3(d1, "new note");
+    st.push(d1);
+    st.push(d2);
+    st.push(d3);
+    Date *a = st.pop();
+    char *res = new char[44];
+    sprintf(res, "%s", "Hours:\n07PM:25:56\nDate:\n15/01/2003 19:25:56\n");
+    REQUIRE(!memcmp(res, st.show(), 44));
+}
 
+TEST_CASE("Testing Template Stack") {
+    char* res = new char[255];
+    sprintf(res, "");
     StackT<Date> st1;
     Date d1(15,1,2003,19,25,56);
     Date d2(10,2,2034,14,35,16);
@@ -268,14 +281,22 @@ TEST_CASE("Testing Template Stack") {
     st3.push(n2);
     st3.push(n3);
 
+    StackT<int> st4;
+    st4.push(4532);
+    st4.push(23);
+    st4.push(643);
+
     strcat(res, st1.show());
     strcat(res, st2.show());
     strcat(res, st3.show());
+    strcat(res, st4.show());
 
-    char* tmp = new char[244];
-    sprintf(tmp, "%s%s%s", "Date:\n26/03/2021 05:16:27\nDate:\n10/02/2034 14:35:16\nDate:\n15/01/2003 19:25:56\n", 
+    char* tmp = new char[255];
+    sprintf(tmp, "%s%s%s%s", "Date:\n26/03/2021 05:16:27\nDate:\n10/02/2034 14:35:16\nDate:\n15/01/2003 19:25:56\n", 
     "Hours:\n05AM:16:27\nHours:\n02PM:35:16\nHours:\n07PM:25:56\n", 
-    "Notes:\n26/03/2021 05:16:27\nnew note3\nNotes:\n10/02/2034 14:35:16\nnew note2\nNotes:\n15/01/2003 19:25:56\nnew note1\n");
+    "Notes:\n26/03/2021 05:16:27\nnew note3\nNotes:\n10/02/2034 14:35:16\nnew note2\nNotes:\n15/01/2003 19:25:56\nnew note1\n",
+    "643\n23\n4532\n");
 
-    REQUIRE(!memcmp(res, tmp, 244));
+    
+    REQUIRE(!memcmp(res, tmp, 255));
 }

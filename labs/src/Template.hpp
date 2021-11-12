@@ -4,17 +4,27 @@
 #include "Notes.hpp"
 #include "Methods.hpp"
 
+int get_size(int x) {
+    int val = x, s = 0;
+    while (x != 0) {
+        s++;
+        x /= 10;
+    }
+    return s;
+}
+
 template <class T> 
 class StackT {
 public:
     StackT();
     void push(T data);
-    void pop();
+    T* pop();
     char* show();
     bool empty();
     int size();
     ~StackT();
 private:
+    
     class Node {
     public:
         Node();
@@ -22,7 +32,7 @@ private:
         ~Node();
         friend class StackT;
     private:
-        T* data;
+        T *data;
         Node *next;
     };
 
@@ -44,8 +54,16 @@ void StackT<T>::push(T data) {
     _size++;    
 }
 
+template <>
+void StackT<int>::push(int data) {
+    Node *temp = new Node(data);
+    temp->next = root;
+    root = temp;
+    _size++;    
+}
+
 template <class T>
-void StackT<T>::pop() {
+T* StackT<T>::pop() {
     try {
         if(empty()) throw runtime_error("stack is empty.");
     }
@@ -55,8 +73,11 @@ void StackT<T>::pop() {
     }
     Node *deleteNode = root;
     root = root->next;
+    T *a = deleteNode->data;
+    T *t = new T(*a);
     delete deleteNode;
     _size--;    
+    return t;
 }
 
 template <class T>
@@ -78,6 +99,32 @@ char* StackT<T>::show() {
     return res;    
 }
 
+template<>
+char* StackT<int>::show() {
+    Node *a = root;
+    int s = 0;
+    while (a != nullptr) {
+        s += get_size(*a->data);
+        a = a->next;
+    }
+    char* res = new char[s+1];
+    sprintf(res, "");
+    int i = 0;
+    Node *ptr = root;
+    while (ptr != nullptr) {
+        int temp = *ptr->data;
+        int p = pow(10, get_size(temp)-1);
+        for (; p > 0; p /= 10) {
+
+            res[i++] = (temp / p) + '0'; 
+            temp %= p;
+        }
+        res[i++] = '\n';
+        ptr = ptr->next;
+    }
+    return res;
+}
+
 template <class T>
 bool StackT<T>::empty() {
     return this->root == nullptr;
@@ -97,7 +144,7 @@ StackT<T>::~StackT() {
 
 template <class T>
 StackT<T>::Node::Node() {
-    this->data = new Date();
+    this->data = new T();
     this->next = nullptr;
 }
 
@@ -107,7 +154,9 @@ StackT<T>::Node::Node(T data) {
     this->next = nullptr;
 }
 
+
 template <class T>
 StackT<T>::Node::~Node() {
     delete this->data;
 }
+

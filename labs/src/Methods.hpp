@@ -424,7 +424,7 @@ istream& operator>>(istream& is, Date& d) {
 }
 
 Date::~Date() {
-    delete[] this->date_time;    
+    //delete[] this->date_time;    
     count--;
 }
 

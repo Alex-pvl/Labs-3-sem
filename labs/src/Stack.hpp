@@ -10,7 +10,7 @@ public:
     void push(Date data);
     void push(Hours data);
     void push(Notes data);
-    void pop();
+    Date* pop();
     char* show();
     bool empty();
     int size();
@@ -60,7 +60,7 @@ void Stack::push(Notes data) {
     _size++;
 }
 
-void Stack::pop() {
+Date* Stack::pop() {
     try {
         if(empty()) throw runtime_error("stack is empty.");
     }
@@ -68,10 +68,14 @@ void Stack::pop() {
     {
         std::cerr << e.what() << '\n';
     }
+
     Node *deleteNode = root;
     root = root->next;
+    Date *a = deleteNode->data;
+    Date *b = new Date(*a);
     delete deleteNode;
     _size--;
+    return b;
 }
 
 char* Stack::show() {
