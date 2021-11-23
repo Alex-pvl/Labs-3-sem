@@ -97,6 +97,8 @@ public:
 
     virtual int getSize();
 
+    friend bool operator==(Date& d1, Date& d2);
+
 private:
     int day;
     int mon;

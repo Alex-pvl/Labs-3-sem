@@ -370,7 +370,7 @@ ifstream& readFromBin(ifstream& fin, Date& d) {
 
 ostream& operator<<(ostream& os, Date& d) {  
     d.setDateTime();
-    os << d.getDateTime() << "\n";
+    os << d.getDateTime();
     return os;
 }
 
@@ -442,4 +442,8 @@ Date& Date::operator=(const Date& d) {
 
 int Date::getSize() {
     return strlen(this->toString());
+}
+
+bool operator==(Date& d1, Date& d2) {
+    return (d1.getDateTime() == d2.getDateTime());
 }
